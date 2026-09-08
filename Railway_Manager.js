@@ -277,6 +277,32 @@ function AnnulerTicket(){
     }
 
 }
+
+//7. Rechercher un ticket 
+function RechercherTicket(){
+    let nom = prompt("Nom du passager : ");
+    for (let i=0 ; i<tickets.length;i++) {
+       if(nom == tickets[i].passengerName){
+            console.log(`\nTicket #${tickets[i].id}`);
+            console.log(`Passager : ${tickets[i].passengerName}`);
+            console.log(`Trajet : ${trips[tickets[i].tripId-1].departure} → ${trips[tickets[i].tripId-1].destination}`);
+            console.log(`Place : ${tickets[i].seatNumber}`);
+            console.log(`Prix : ${tickets[i].price} DH\n`);
+       }
+    }
+}
+
+//8. Filtrer les trajets 
+function FiltrerTrips(){
+    let ville = prompt("Ville de départ : ");
+    for (let i = 0; i < trips.length; i++) {
+        if(trips[i].departure == ville){
+          console.log(`\n${trips[i].departure} → ${trips[i].destination} : ${trips[i].price}`); 
+        } 
+        
+    }
+}
+
 //1.Menu principal
 do {
     console.log("===============================");
@@ -301,9 +327,9 @@ do {
             break;
         case 4: AnnulerTicket();
             break;
-        case 5:
+        case 5: RechercherTicket();
             break;
-        case 6:
+        case 6: FiltrerTrips();
             break;
         case 7:
             break;
