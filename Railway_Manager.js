@@ -1,5 +1,5 @@
 const prompt = require('prompt-sync')()
-//2.les trajets
+//2.les trips
 const trips = [
     {
         id: 1,
@@ -182,21 +182,51 @@ const trips = [
         availableSeats: 50
     }
 ];
-
+//3. Afficher les trips
+function Affichertrip(){
+    console.log("=== TRAJETS DISPONIBLES === ");
+   for(let trip of trips){
+        console.log(`#${trip.id} ${trip.departure} → ${trip.destination}`);       
+        console.log(`Départ : ${trip.departureTime}`);       
+        console.log(`Arrivée : ${trip.arrivalTime}`);       
+        console.log(`Prix : ${trip.price} DH `);       
+        console.log(`Places disponibles : ${trip.availableSeats}\n`); 
+        
+       
+    }
+}
 
 //1.Menu principal
 do {
     console.log("===============================");
     console.log("\tRAILWAY MANAGER");
     console.log("===============================\n");
-    console.log("1. Afficher les trajets");
+    console.log("1. Afficher les trips");
     console.log("2. Acheter un ticket ");
     console.log("3. Afficher les tickets");
     console.log("4. Annuler un ticket ");
     console.log("5. Rechercher un ticket ");
-    console.log("6. Filtrer les trajets ");
-    console.log("7. Trier les trajets ");
+    console.log("6. Filtrer les trips ");
+    console.log("7. Trier les trips ");
     console.log("0. Quitter\n");
 
     var choix = Number(prompt("Votre choix : "))
+    switch(choix){
+        case 1: Affichertrip();
+            break;
+        case 2:
+            break;
+        case 3:
+            break;
+        case 4:
+            break;
+        case 5:
+            break;
+        case 6:
+            break;
+        case 7:
+            break;
+        default :
+            break;
+    }
 } while (choix != 0);
