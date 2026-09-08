@@ -297,7 +297,7 @@ function FiltrerTrips(){
     let ville = prompt("Ville de départ : ");
     for (let i = 0; i < trips.length; i++) {
         if(trips[i].departure == ville){
-          console.log(`\n${trips[i].departure} → ${trips[i].destination} : ${trips[i].price}`); 
+          console.log(`\n${trips[i].departure} → ${trips[i].destination} : ${trips[i].price} DH`); 
         } 
         
     }
