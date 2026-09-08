@@ -252,10 +252,31 @@ function AfficherTicket(){
         console.log(`Passager : ${ticket.passengerName}`);
         console.log(`Trajet : ${deprt} → ${arrv}`);
         console.log(`Place : ${ticket.seatNumber}`);
-        console.log(`Prix : ${ticket.price}DH\n`);
+        console.log(`Prix : ${ticket.price} DH\n`);
     }
 }
 
+//6. Annuler un ticket
+function AnnulerTicket(){
+    let id_ticket=Number(prompt("Identifiant du ticket : "));
+    let existe = false ;
+    let i = 0;
+    for (const ticket of tickets) {
+        if(id_ticket == ticket.id){
+            id_trajet = ticket.tripId;
+            existe = true;
+            tickets.splice(i);
+            console.log("Ticket annulé avec succès.");
+
+        }
+        i++;
+    }
+    if(!existe) console.log("Ticket introuvable.");
+    for (const trip of trips) {
+        if(id_trajet == trip.id) trip.availableSeats++;
+    }
+
+}
 //1.Menu principal
 do {
     console.log("===============================");
@@ -278,7 +299,7 @@ do {
             break;
         case 3: AfficherTicket();
             break;
-        case 4:
+        case 4: AnnulerTicket();
             break;
         case 5:
             break;
