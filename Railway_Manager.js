@@ -1,4 +1,7 @@
 const prompt = require('prompt-sync')()
+const tickets = []; 
+let id_passenger=1;
+let numero_place=1;
 //2.les trips
 const trips = [
     {
@@ -196,6 +199,45 @@ function Affichertrip(){
     }
 }
 
+//4. Acheter un ticket
+function AcheterTicket(){
+    let nom = prompt("Nom du passager : ");
+    let id_trajet= prompt("Identifiant du trajet : ");
+    let existe = false;
+    
+    for(let trip of trips){
+        if(trip.id == id_trajet){
+            existe = true;
+            nb_seat = trip.availableSeats;
+            trip.availableSeats-- ;
+            numero_place = 50-trip.availableSeats;
+            pr = trip.price;
+            deprt = trip.departure;
+            arrv= trip.destination
+        }
+    }
+
+    if(existe){
+        if(nb_seat != 0){
+                let ticket={
+                    id : id_passenger,
+                    passengerName : nom,
+                    tripId : id_trajet,
+                    seatNumber : numero_place,
+                    price : pr
+                }
+                console.log("\nTicket acheté avec succès.\n");
+                console.log(`Ticket #${ticket.id}`);
+                console.log(`Passager : ${ticket.passengerName}`);
+                console.log(`Trajet : ${deprt} → ${arrv}`);
+                console.log(`Place : ${ticket.seatNumber}`);
+                console.log(`Prix : ${ticket.price} DH`);
+                id_passenger++;
+                tickets.push(ticket);
+        }else console.log("\nTrain complet.")
+    }else console.log("\nTrajet introuvable. ")
+}
+
 //1.Menu principal
 do {
     console.log("===============================");
@@ -214,7 +256,7 @@ do {
     switch(choix){
         case 1: Affichertrip();
             break;
-        case 2:
+        case 2: AcheterTicket();
             break;
         case 3:
             break;
