@@ -187,7 +187,7 @@ const trips = [
 ];
 //3. Afficher les trips
 function Affichertrip(){
-    console.log("=== TRAJETS DISPONIBLES === ");
+   console.log("\n=== TRAJETS DISPONIBLES === ");
    for(let trip of trips){
         console.log(`#${trip.id} ${trip.departure} → ${trip.destination}`);       
         console.log(`Départ : ${trip.departureTime}`);       
@@ -238,6 +238,24 @@ function AcheterTicket(){
     }else console.log("\nTrajet introuvable. ")
 }
 
+//5. Afficher les tickets 
+function AfficherTicket(){
+    console.log("\n=== TICKETS === ");
+    for(let ticket of tickets){
+        for(let trip of trips){
+            if(trip.id == ticket.tripId){
+                deprt = trip.departure;
+                arrv= trip.destination;
+            }
+        }
+        console.log(`Ticket #${ticket.id}`);
+        console.log(`Passager : ${ticket.passengerName}`);
+        console.log(`Trajet : ${deprt} → ${arrv}`);
+        console.log(`Place : ${ticket.seatNumber}`);
+        console.log(`Prix : ${ticket.price}DH\n`);
+    }
+}
+
 //1.Menu principal
 do {
     console.log("===============================");
@@ -258,7 +276,7 @@ do {
             break;
         case 2: AcheterTicket();
             break;
-        case 3:
+        case 3: AfficherTicket();
             break;
         case 4:
             break;
