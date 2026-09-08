@@ -241,18 +241,12 @@ function AcheterTicket(){
 //5. Afficher les tickets 
 function AfficherTicket(){
     console.log("\n=== TICKETS === ");
-    for(let ticket of tickets){
-        for(let trip of trips){
-            if(trip.id == ticket.tripId){
-                deprt = trip.departure;
-                arrv= trip.destination;
-            }
-        }
-        console.log(`Ticket #${ticket.id}`);
-        console.log(`Passager : ${ticket.passengerName}`);
-        console.log(`Trajet : ${deprt} → ${arrv}`);
-        console.log(`Place : ${ticket.seatNumber}`);
-        console.log(`Prix : ${ticket.price} DH\n`);
+    for (let i=0 ; i<tickets.length;i++){
+        console.log(`Ticket #${tickets[i].id}`);
+        console.log(`Passager : ${tickets[i].passengerName}`);
+        console.log(`Trajet : ${trips[tickets[i].tripId-1].departure} → ${trips[tickets[i].tripId-1].destination}`);
+        console.log(`Place : ${tickets[i].seatNumber}`);
+        console.log(`Prix : ${tickets[i].price} DH\n`);
     }
 }
 
@@ -260,22 +254,15 @@ function AfficherTicket(){
 function AnnulerTicket(){
     let id_ticket=Number(prompt("Identifiant du ticket : "));
     let existe = false ;
-    let i = 0;
-    for (const ticket of tickets) {
-        if(id_ticket == ticket.id){
-            id_trajet = ticket.tripId;
+    for (let i=0 ; i<tickets.length;i++) {
+        if(id_ticket == tickets[i].id){
             existe = true;
-            tickets.splice(i);
+            tickets.splice(i,1);
+            if(tickets[i].tripId == trips[tickets[i].tripId-1].id) trips[tickets[i].tripId-1].availableSeats++;
             console.log("Ticket annulé avec succès.");
-
         }
-        i++;
     }
     if(!existe) console.log("Ticket introuvable.");
-    for (const trip of trips) {
-        if(id_trajet == trip.id) trip.availableSeats++;
-    }
-
 }
 
 //7. Rechercher un ticket 
@@ -300,6 +287,23 @@ function FiltrerTrips(){
           console.log(`\n${trips[i].departure} → ${trips[i].destination} : ${trips[i].price} DH`); 
         } 
         
+    }
+}
+
+//9. Trier les trajets
+function TrierTrajet(){
+    let array=trips;
+    for (let i=0 ; i<array.length;i++){
+        for (let j = 0; j < array.length-1-i; j++) {
+            if(array[j].price > array[j+1].price){
+                let temp = array[j];
+                array[j] = array[j+1];
+                array[j+1] = temp;
+            } 
+        }
+    }
+    for (const trip of array) {
+        console.log(`\n${trip.departure} → ${trip.destination} : ${trip.price} DH`); 
     }
 }
 
@@ -331,7 +335,7 @@ do {
             break;
         case 6: FiltrerTrips();
             break;
-        case 7:
+        case 7: TrierTrajet()
             break;
         default :
             break;
