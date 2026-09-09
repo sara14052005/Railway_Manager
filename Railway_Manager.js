@@ -1,7 +1,6 @@
 const prompt = require('prompt-sync')()
 const tickets = []; 
 let id_passenger=1;
-let numero_place=1;
 //2.les trips
 const trips = [
     {
@@ -185,6 +184,7 @@ const trips = [
         availableSeats: 50
     }
 ];
+
 //3. Afficher les trips
 function Affichertrip(){
    console.log("\n=== TRAJETS DISPONIBLES === ");
@@ -205,37 +205,30 @@ function AcheterTicket(){
     let id_trajet= prompt("Identifiant du trajet : ");
     let existe = false;
     
-    for(let trip of trips){
-        if(trip.id == id_trajet){
-            existe = true;
-            nb_seat = trip.availableSeats;
-            trip.availableSeats-- ;
-            numero_place = 50-trip.availableSeats;
-            pr = trip.price;
-            deprt = trip.departure;
-            arrv= trip.destination
-        }
-    }
-
-    if(existe){
-        if(nb_seat != 0){
+    for(let i=0;i<trips.length;i++){
+        if(trips[i].id == id_trajet){
+            if(trips[i].availableSeats != 0){
+                existe = true;
+                trips[i].availableSeats-- ;
                 let ticket={
                     id : id_passenger,
                     passengerName : nom,
                     tripId : id_trajet,
-                    seatNumber : numero_place,
-                    price : pr
+                    seatNumber : 50 - trips[i].availableSeats,
+                    price : trips[i].price
                 }
                 console.log("\nTicket acheté avec succès.\n");
                 console.log(`Ticket #${ticket.id}`);
                 console.log(`Passager : ${ticket.passengerName}`);
-                console.log(`Trajet : ${deprt} → ${arrv}`);
+                console.log(`Trajet : ${trips[i].departure} → ${trips[i].destination}`);
                 console.log(`Place : ${ticket.seatNumber}`);
                 console.log(`Prix : ${ticket.price} DH`);
                 id_passenger++;
                 tickets.push(ticket);
-        }else console.log("\nTrain complet.")
-    }else console.log("\nTrajet introuvable. ")
+            }else console.log("\nTrain complet.")
+        }
+    }
+    if (!existe) console.log("\nTrajet introuvable. ")
 }
 
 //5. Afficher les tickets 
@@ -257,10 +250,13 @@ function AnnulerTicket(){
     for (let i=0 ; i<tickets.length;i++) {
         if(id_ticket == tickets[i].id){
             existe = true;
-            if(tickets[i+1] != undefined) tickets[i+1].seatNumber--;
-            tickets.splice(i,1);
+            if(tickets[i+1] != undefined) {
+                for(let j=i;j<tickets.length;j++){
+                    tickets[j].seatNumber--;
+                }
+            }
             if(tickets[i].tripId == trips[tickets[i].tripId-1].id) trips[tickets[i].tripId-1].availableSeats++;
-
+            tickets.splice(i,1);
             console.log("\nTicket annulé avec succès.");
         }
     }
@@ -270,8 +266,10 @@ function AnnulerTicket(){
 //7. Rechercher un ticket 
 function RechercherTicket(){
     let nom = prompt("Nom du passager : ");
+    let existe = false;
     for (let i=0 ; i<tickets.length;i++) {
        if(nom == tickets[i].passengerName){
+            existe = true;
             console.log(`\nTicket #${tickets[i].id}`);
             console.log(`Passager : ${tickets[i].passengerName}`);
             console.log(`Trajet : ${trips[tickets[i].tripId-1].departure} → ${trips[tickets[i].tripId-1].destination}`);
@@ -279,6 +277,7 @@ function RechercherTicket(){
             console.log(`Prix : ${tickets[i].price} DH\n`);
        }
     }
+    if (!existe) console.log("\nTicket introuvable.")
 }
 
 //8. Filtrer les trajets 
@@ -315,7 +314,9 @@ function Statistiques(){
     for (let i=0 ; i<tickets.length;i++){
         chiffre_aff+= tickets[i].price;
     }  
+
     console.log(`Chiff re d'aff aires total : ${chiffre_aff} DH`); 
+
     let plus_vendu=trips[0],tck_vendu=0;
     for (let i=0 ; i<tickets.length;i++){
         let compteur=0
@@ -330,6 +331,7 @@ function Statistiques(){
     console.log(`${plus_vendu.departure} → ${plus_vendu.destination}`);
     console.log(`${tck_vendu} tickets vendus`);
 }
+
 //1.Menu principal
 do {
     console.log("===============================");
@@ -347,6 +349,8 @@ do {
 
     var choix = Number(prompt("Votre choix : "))
     switch(choix){
+        case 0: 
+            break;
         case 1: Affichertrip();
             break;
         case 2: AcheterTicket();
@@ -359,11 +363,11 @@ do {
             break;
         case 6: FiltrerTrips();
             break;
-        case 7: TrierTrajet()
+        case 7: TrierTrajet();
             break;
         case 8: Statistiques();
             break;
-        default :
+        default : console.log("\nChoix Invalide !!!! ");
             break;
     }
 } while (choix != 0);
