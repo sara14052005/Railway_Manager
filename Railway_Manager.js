@@ -318,19 +318,48 @@ function FiltrerTrips(){
 
 //9. Trier les trajets
 function TrierTrajet(){
-    let array=trips;
-    for (let i=0 ; i<array.length;i++){
-        for (let j = 0; j < array.length-1-i; j++) {
-            if(array[j].price > array[j+1].price){
-                let temp = array[j];
-                array[j] = array[j+1];
-                array[j+1] = temp;
-            } 
+    do{
+        console.log("\n1.Croissant.");
+        console.log("2.Décroissant.\n");
+        var c = Number(prompt("Votre choix: "));
+        let array=trips;
+        switch (c) {
+            case 1:
+                for (let i=0 ; i<array.length;i++){
+                    for (let j = 0; j < array.length-1-i; j++) {
+                        if(array[j].price > array[j+1].price){
+                            let temp = array[j];
+                            array[j] = array[j+1];
+                            array[j+1] = temp;
+                        } 
+                    }
+                }
+                for (const trip of array) {
+                    console.log(`\n${trip.departure} → ${trip.destination} : ${trip.price} DH`); 
+                }
+                break;
+            case 2:
+                for (let i=0 ; i<array.length;i++){
+                    for (let j = 0; j < array.length-1-i; j++) {
+                        if(array[j].price < array[j+1].price){
+                            let temp = array[j];
+                            array[j] = array[j+1];
+                            array[j+1] = temp;
+                        } 
+                    }
+                }
+                for (const trip of array) {
+                    console.log(`\n${trip.departure} → ${trip.destination} : ${trip.price} DH`); 
+                }
+                break;
+        
+            default: console.log("\nChoix invalide !!!\n")
+                break;
         }
-    }
-    for (const trip of array) {
-        console.log(`\n${trip.departure} → ${trip.destination} : ${trip.price} DH`); 
-    }
+    }while(c != 1 && c != 2)
+    
+    
+    
 }
 //10. Bonus — Statistiques
 function Statistiques(){
