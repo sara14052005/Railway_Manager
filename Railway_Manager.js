@@ -234,7 +234,7 @@ function AcheterTicket(){
                 //create "ticket" objects
                 let ticket={
                     id : id_passenger,
-                    passengerName : nom,
+                    passengerName : nom.toLowerCase(),
                     tripId : id_trajet,
                     seatNumber : numero_place,
                     price : trips[i].price
@@ -293,7 +293,7 @@ function RechercherTicket(){
     let nom = prompt("Nom du passager : ");
     let existe = false;
     for (let i=0 ; i<tickets.length;i++) {
-       if(nom == tickets[i].passengerName){
+       if(nom.toLowerCase() == tickets[i].passengerName){
             existe = true;
             console.log(`\nTicket #${tickets[i].id}`);
             console.log(`Passager : ${tickets[i].passengerName}`);
@@ -308,12 +308,16 @@ function RechercherTicket(){
 //8. Filtrer les trajets 
 function FiltrerTrips(){
     let ville = prompt("Ville de départ : ");
+    let existe = false
+    ville = ville.toLowerCase();
     for (let i = 0; i < trips.length; i++) {
-        if(trips[i].departure == ville){
+        if(trips[i].departure.toLocaleLowerCase() == ville){
           console.log(`\n${trips[i].departure} → ${trips[i].destination} : ${trips[i].price} DH`); 
+          existe=true;
         } 
         
     }
+    if(!existe) console.log("\nVille introuvable.\n")
 }
 
 //9. Trier les trajets
@@ -391,11 +395,6 @@ function Statistiques(){
             }
         }
     }
-    
-    
-    
-    
-    
 }
 
 //1.Menu principal
