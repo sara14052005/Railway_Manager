@@ -257,12 +257,14 @@ function AnnulerTicket(){
     for (let i=0 ; i<tickets.length;i++) {
         if(id_ticket == tickets[i].id){
             existe = true;
+            if(tickets[i+1] != undefined) tickets[i+1].seatNumber--;
             tickets.splice(i,1);
             if(tickets[i].tripId == trips[tickets[i].tripId-1].id) trips[tickets[i].tripId-1].availableSeats++;
-            console.log("Ticket annulé avec succès.");
+
+            console.log("\nTicket annulé avec succès.");
         }
     }
-    if(!existe) console.log("Ticket introuvable.");
+    if(!existe) console.log("\nTicket introuvable.");
 }
 
 //7. Rechercher un ticket 
@@ -306,7 +308,28 @@ function TrierTrajet(){
         console.log(`\n${trip.departure} → ${trip.destination} : ${trip.price} DH`); 
     }
 }
-
+//10. Bonus — Statistiques
+function Statistiques(){
+    console.log(`\nNombre total de tickets : ${tickets.length}`);
+    let chiffre_aff=0;
+    for (let i=0 ; i<tickets.length;i++){
+        chiffre_aff+= tickets[i].price;
+    }  
+    console.log(`Chiff re d'aff aires total : ${chiffre_aff} DH`); 
+    let plus_vendu=trips[0],tck_vendu=0;
+    for (let i=0 ; i<tickets.length;i++){
+        let compteur=0
+        for(let j=0 ; j<tickets.length;j++){
+            if(tickets[j].tripId == trips[tickets[j].tripId-1].id) compteur++;
+        }
+        if (compteur > tck_vendu) {
+            plus_vendu = tickets[i];
+            tck_vendu = compteur;
+        }
+    }
+    console.log(`${plus_vendu.departure} → ${plus_vendu.destination}`);
+    console.log(`${tck_vendu} tickets vendus`);
+}
 //1.Menu principal
 do {
     console.log("===============================");
@@ -319,6 +342,7 @@ do {
     console.log("5. Rechercher un ticket ");
     console.log("6. Filtrer les trips ");
     console.log("7. Trier les trips ");
+    console.log("8. Statistiques ");
     console.log("0. Quitter\n");
 
     var choix = Number(prompt("Votre choix : "))
@@ -336,6 +360,8 @@ do {
         case 6: FiltrerTrips();
             break;
         case 7: TrierTrajet()
+            break;
+        case 8: Statistiques();
             break;
         default :
             break;
