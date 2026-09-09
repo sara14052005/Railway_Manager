@@ -366,36 +366,34 @@ function Statistiques(){
     console.log(`\nNombre total de tickets : ${tickets.length}`);
 
     let chiffre_aff=0;
-    let plus=[],id_plus;
-
-    for (let i=0 ; i<trips.length;i++){
-        let compteur=0
-        for(let j=0 ; j<tickets.length;j++){
-            if(tickets[j].tripId == trips[i].id){
-                id_plus = trips[i].id
-                compteur++;
-            } 
-        }
-        let ticket_vendu ={
-            id : id_plus,
-            nb_tck : compteur,
-
-        }
-        plus.push(ticket_vendu);
-    }
-    let plus_vendu=plus[0];
-    for(let i=0;i<plus.length;i++){
-        if(plus[i].nb_tck >plus_vendu.nb_tck) plus_vendu = plus[i];
-    }
+    let min_seat = trips[0].availableSeats,nm_tk=0;
+    
+    //pour calcule chiffre d'affaire
     for (const ticket of tickets) {
         chiffre_aff+=ticket.price;
     }
     console.log(`\nChiffre d'affaires total : ${chiffre_aff} DH\n`); 
+
     console.log("Trajet le plus vendu :")
-    if (plus_vendu.id != undefined) {
-        console.log(`\n${trips[plus_vendu.id-1].departure} → ${trips[plus_vendu.id-1].destination}`);
-        console.log(`\n${plus_vendu.nb_tck} tickets vendus`);
-    }else console.log("\nAucun ticket n'a été vendu.\n");
+    for (let i=0 ; i<trips.length;i++){
+        if(trips[i].availableSeats < min_seat){
+            min_seat = trips[i].availableSeats;
+            nm_tk = 50-trips[i].availableSeats;
+        } 
+    }
+    if(min_seat == 50 && nm_tk == 0) console.log("\nAucun ticket n'a été vendu.\n");
+    else{
+        for(let i=0 ; i<trips.length;i++){
+            if(trips[i].availableSeats == min_seat) 
+            {
+                console.log(`\n${trips[i].departure} → ${trips[i].destination}`);
+                console.log(`\n${nm_tk} tickets vendus`);
+            }
+        }
+    }
+    
+    
+    
     
     
 }
