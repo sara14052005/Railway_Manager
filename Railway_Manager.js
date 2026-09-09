@@ -3,8 +3,6 @@ const tickets = [];
 let id_passenger=1;
 let nmPlacArray=[];
 
-
-let index_placArr=0;
 //2.les trips
 const trips = [
     {
@@ -222,7 +220,7 @@ function AcheterTicket(){
             if(trips[i].availableSeats != 0){
                 let j=0;
                 //give the 1st place not token
-                do {
+                while (!token){
                     if(nmPlacArray[i][j] != "token"){
                         numero_place = nmPlacArray[i][j];
                         nmPlacArray[i][j] = "token";
@@ -230,9 +228,10 @@ function AcheterTicket(){
                     }
                     j++;
                      
-                } while (!token);
-                existe = true;
+                } ;
+                existe = true;//if trips existe  
                 trips[i].availableSeats-- ;
+                //create "ticket" objects
                 let ticket={
                     id : id_passenger,
                     passengerName : nom,
@@ -271,18 +270,16 @@ function AfficherTicket(){
 function AnnulerTicket(){
     let id_ticket=Number(prompt("Identifiant du ticket : "));
     let existe = false ;
-    let token = true;
     for (let i=0 ; i<tickets.length;i++) {
         if(id_ticket == tickets[i].id){
             existe = true;
             //give back number of seat
-            do{
-                if(nmPlacArray[tickets[i].tripId-1][tickets[i].seatNumber-1] == "token"){
-                    nmPlacArray[tickets[i].tripId-1][tickets[i].seatNumber-1] = tickets[i].seatNumber;
-                    token=false
-                }
+            
+            if(nmPlacArray[tickets[i].tripId-1][tickets[i].seatNumber-1] == "token"){
+                nmPlacArray[tickets[i].tripId-1][tickets[i].seatNumber-1] = tickets[i].seatNumber;
+            }
 
-            }while(token)
+            
             if(tickets[i].tripId == trips[tickets[i].tripId-1].id) trips[tickets[i].tripId-1].availableSeats++;
             tickets.splice(i,1);
             console.log("\nTicket annulé avec succès.");
@@ -340,7 +337,7 @@ function Statistiques(){
     console.log(`\nNombre total de tickets : ${tickets.length}`);
 
     let chiffre_aff=0;
-    let tck_vendu=0,plus=[],id_plus;
+    let plus=[],id_plus;
 
     for (let i=0 ; i<trips.length;i++){
         let compteur=0
@@ -366,8 +363,12 @@ function Statistiques(){
     }
     console.log(`\nChiffre d'affaires total : ${chiffre_aff} DH\n`); 
     console.log("Trajet le plus vendu :")
-    console.log(`\n${trips[plus_vendu.id-1].departure} → ${trips[plus_vendu.id-1].destination}`);
-    console.log(`\n${plus_vendu.nb_tck} tickets vendus`);
+    if (plus_vendu.id != undefined) {
+        console.log(`\n${trips[plus_vendu.id-1].departure} → ${trips[plus_vendu.id-1].destination}`);
+        console.log(`\n${plus_vendu.nb_tck} tickets vendus`);
+    }else console.log("\nAucun ticket n'a été vendu.\n");
+    
+    
 }
 
 //1.Menu principal
